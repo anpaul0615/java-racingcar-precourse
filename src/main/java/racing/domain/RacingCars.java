@@ -41,6 +41,14 @@ public class RacingCars implements Iterable<Car> {
 		return this;
 	}
 
+	public List<String> getRacingCarNames() {
+		List<String> carNames = new ArrayList<>();
+		for (Car car : cars) {
+			carNames.add(car.getName());
+		}
+		return carNames;
+	}
+
 	@Override
 	public Iterator<Car> iterator() {
 		return cars.iterator();

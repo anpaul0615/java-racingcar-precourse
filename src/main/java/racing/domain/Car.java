@@ -11,6 +11,10 @@ public class Car implements Comparable<Car> {
 		this.drivenDistance = 0;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	public int getDrivenDistance() {
 		return drivenDistance;
 	}
