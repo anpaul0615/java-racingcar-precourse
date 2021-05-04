@@ -5,36 +5,39 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import racing.RacingGameConfig;
+
 public class RacingCars implements Iterable<Car> {
+	private final RacingGameConfig config;
 	private final List<Car> cars;
-	private final int racingCycle;
-	private int currentRacingCycle;
 
-	public RacingCars(String[] carNames, int racingCycle) {
+	private int racingCycle = 0;
+
+	public RacingCars(RacingGameConfig config) {
+		this.config = config;
 		this.cars = new ArrayList<>();
+	}
 
-		for (String name : carNames) {
+	public void init() {
+		for (String name : config.getCarNames()) {
 			cars.add(new Car(name));
 		}
-
-		this.racingCycle = racingCycle;
-		this.currentRacingCycle = 0;
 	}
 
 	public boolean hasNextRacingCycle() {
-		return currentRacingCycle < racingCycle;
+		return racingCycle < config.getRacingCycle();
 	}
 
 	public void race() {
 		for (Car car : cars) {
 			car.drive();
 		}
-		currentRacingCycle += 1;
+		racingCycle += 1;
 	}
 
 	public RacingCars filterFarthestCars() {
 		int farthestDrivenDistance = Collections.max(cars).getDrivenDistance();
-		cars.removeIf(car -> (car.getDrivenDistance() < farthestDrivenDistance));
+		cars.removeIf(car -> car.getDrivenDistance() < farthestDrivenDistance);
 		return this;
 	}
 

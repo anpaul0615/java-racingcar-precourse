@@ -9,19 +9,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import racing.RacingGameConfig;
+
 class RacingCarsTest {
 	private RacingCars racingCars;
-	private final String[] CAR_NAMES = { "carA", "carB", "carC" };
-	private final int RACING_CYCLE = 3;
+	private RacingGameConfig config;
+
+	private final String CAR_NAMES_INPUT = "carA,carB,carC";
+	private final String RACING_CYCLE_INPUT = "3";
 
 	@BeforeEach
 	void setUp() {
-		racingCars = new RacingCars(CAR_NAMES, RACING_CYCLE);
+		config = new RacingGameConfig();
+		config.initCarNames(CAR_NAMES_INPUT);
+		config.initRacingCycle(RACING_CYCLE_INPUT);
+
+		racingCars = new RacingCars(config);
+		racingCars.init();
 	}
 
 	@AfterEach
 	void tearDown() {
 		racingCars = null;
+		config = null;
 	}
 
 	@Test
@@ -29,7 +39,7 @@ class RacingCarsTest {
 	void hasNextRacingCycle() {
 		assertThat(racingCars.hasNextRacingCycle()).isTrue();
 
-		int racingCycleBeforeFinal = RACING_CYCLE - 1;
+		int racingCycleBeforeFinal = config.getRacingCycle() - 1;
 		for (int i=0; i<racingCycleBeforeFinal; i++) {
 			racingCars.race();
 		}
@@ -43,7 +53,7 @@ class RacingCarsTest {
 	@Test
 	@DisplayName("경주한 모든 자동차의 최고 주행거리는 1등 자동차들의 주행거리 min/max 와 같다")
 	void filterFarthestCars() {
-		for (int i=0; i<RACING_CYCLE; i++) {
+		for (int i=0; i<config.getRacingCycle(); i++) {
 			racingCars.race();
 		}
 
