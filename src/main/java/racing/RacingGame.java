@@ -8,9 +8,14 @@ import racing.validator.InputValidator;
 
 public class RacingGame {
 	private final RacingGameConfig config;
+	private RacingGameState state;
 
 	public RacingGame() {
 		config = new RacingGameConfig();
+	}
+
+	public boolean isReady() {
+		return state == RacingGameState.READY;
 	}
 
 	public void init() {
@@ -19,6 +24,7 @@ public class RacingGame {
 		String carNamesInput = Console.getUserInput();
 		if (!InputValidator.isValidCarNamesInput(carNamesInput)) {
 			Console.print(Message.INVALID_CAR_NAMES_INPUT);
+			state = RacingGameState.ERROR;
 			return;
 		}
 		config.initCarNames(carNamesInput);
@@ -28,9 +34,12 @@ public class RacingGame {
 		String racingCycleInput = Console.getUserInput();
 		if (!InputValidator.isValidRacingCycleInput(racingCycleInput)) {
 			Console.print(Message.INVALID_RACING_CYCLE_INPUT);
+			state = RacingGameState.ERROR;
 			return;
 		}
 		config.initRacingCycle(racingCycleInput);
+
+		state = RacingGameState.READY;
 	}
 
 	public void play() {
@@ -54,6 +63,8 @@ public class RacingGame {
 	public static void main(String[] args) {
 		RacingGame racingGame = new RacingGame();
 		racingGame.init();
-		racingGame.play();
+		if (racingGame.isReady()) {
+			racingGame.play();
+		}
 	}
 }
