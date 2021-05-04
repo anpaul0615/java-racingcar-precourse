@@ -1,7 +1,9 @@
 package racing;
 
+import racing.domain.RacingCars;
 import racing.ui.Message;
 import racing.ui.Console;
+import racing.ui.MessageGenerator;
 import racing.validator.InputValidator;
 
 public class RacingGame {
@@ -31,8 +33,27 @@ public class RacingGame {
 		config.initRacingCycle(racingCycleInput);
 	}
 
+	public void play() {
+		// 레이싱 자동차 준비
+		RacingCars racingCars = new RacingCars(config);
+		racingCars.init();
+
+		// 레이싱
+		Console.print(Message.BLANK);
+		Console.print(Message.ANNOUNCE_RACING_RESULT_HEADER);
+		while (racingCars.hasNextRacingCycle()) {
+			racingCars.race();
+			Console.print(MessageGenerator.makeRacingStatusMessage(racingCars));
+		}
+
+		// 최종 경주결과 출력
+		RacingCars farthestRacingCars = racingCars.filterFarthestCars();
+		Console.print(MessageGenerator.makeFinalRacingStatusMessage(farthestRacingCars));
+	}
+
 	public static void main(String[] args) {
 		RacingGame racingGame = new RacingGame();
 		racingGame.init();
+		racingGame.play();
 	}
 }
