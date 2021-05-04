@@ -1,5 +1,6 @@
 package racing.domain;
 
+import java.util.Collections;
 import java.util.Random;
 
 public class Car implements Comparable<Car> {
@@ -24,6 +25,12 @@ public class Car implements Comparable<Car> {
 		int drivingDistance = random.nextInt(10) > 3 ? 1 : 0;
 		drivenDistance += drivingDistance;
 		return drivingDistance;
+	}
+
+	@Override
+	public String toString() {
+		String drivenDistanceSymbols = String.join("", Collections.nCopies(drivenDistance, "-"));
+		return String.format("%s : %s", name, drivenDistanceSymbols);
 	}
 
 	@Override
